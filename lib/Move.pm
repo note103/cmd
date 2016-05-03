@@ -118,7 +118,11 @@ package Move {
                 } else {
                     for (@target) {
                         next if ($_ =~ /^\./);
-                        say "\t$_/";
+                        if (-d $_) {
+                            say "\t$_/";
+                        } else {
+                            say "\t$_";
+                        }
                     }
                 }
 
@@ -147,16 +151,19 @@ package Move {
                         next if ($source =~ /^\./);
                         for my $target (@target) {
                             if ($source =~ /$target/) {
-                                my $rdist = '';
+                                my $rdist = $dist;
                                 if ($fmt eq 'file') {
                                     next unless (-f $source);
                                 }
                                 elsif ($fmt eq 'dir') {
                                     next unless (-d $source);
-                                    $rdist = "$dist/$source";
+                                    $rdist = "$dist$source";
+                                } else {
+                                    $rdist = "$dist$source" if (-d $dist);
                                 }
                                 rmove($source, $rdist) or die $!;
                                 $rdist = $dist;
+                            } else {
                             }
                         }
                     }
