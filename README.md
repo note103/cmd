@@ -1,14 +1,10 @@
 # NAME
 
-cmd - It's new $module
+cmd - File/Directory Handler about Copy, Move, Delete.
 
 # SYNOPSIS
 
     use cmd;
-
-# DESCRIPTION
-
-cmd is ...
 
 # LICENSE
 
@@ -19,4 +15,7 @@ it under the same terms as Perl itself.
 
 # AUTHOR
 
-Hiroaki Kadomatsu <note103@gmail.com>
+Hiroaki Kadomatsu (@note103)
+
+- [Blog](http://note103.hateblo.jp/)
+- [Twitter](https://twitter.com/note103)
