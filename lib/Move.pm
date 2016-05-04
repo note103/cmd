@@ -153,6 +153,14 @@ package Move {
                 $tree = $dist;
                 say "\t$dist";
 
+                my @omit;
+                for (@target) {
+                    unless ("$_/" eq $dist) {
+                        push @omit, $_;
+                    }
+                }
+                @target = @omit;
+
                 say "\n$message_confirmation";
                 chomp(my $result = <STDIN>);
                 if ($result =~ /\A(y|yes)\z/) {
@@ -168,7 +176,8 @@ package Move {
                                 elsif ($fmt eq 'dir') {
                                     next unless (-d $source);
                                     $rdist = "$dist$source";
-                                } else {
+                                }
+                                else {
                                     $rdist = "$dist$source" if (-d $dist);
                                 }
                                 rmove($source, $rdist) or die $!;
