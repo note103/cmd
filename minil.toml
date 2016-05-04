@@ -1,4 +1,4 @@
-name = "cmd"
+name = "crmd"
 # badges = ["travis"]
 module_maker="ModuleBuildTiny"
 

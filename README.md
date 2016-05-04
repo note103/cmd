@@ -1,10 +1,10 @@
 # NAME
 
-cmd - File/Directory Handler about Copy, Move, Delete.
+crmd - File/Directory Handler about Copy, Rename, Move, Delete.
 
 # SYNOPSIS
 
-    use cmd;
+    use crmd;
 
 # LICENSE
 
