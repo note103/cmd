@@ -5,7 +5,7 @@ package Delete {
 
     my $dir = '.';
     my $fmt = '';
-    my $trash = '$HOME/tmp_trash/my_trash_box';
+    my $trashbox = '$HOME/tmp_trash/my_trash_box';
 
     sub init {
         print "f/d/a/q?\n>> ";
@@ -139,10 +139,10 @@ package Delete {
 
         chomp(my $decision = <STDIN>);
         if ($decision =~/(y|yes)/i) {
-            system("if [ ! -e $trash ] ; then mkdir $trash ; fi") == 0 or die "system 'mkdir' failed: $?";
-            system("mv @trash $trash") == 0 or die "system 'mv' failed: $?";
-            for (@trash) {
-                say "Delete successful. $_\t-> $trash";
+            system("if [ ! -e $trashbox ] ; then mkdir -p $trashbox ; fi") == 0 or die "system 'mkdir' failed: $?";
+            system("mv @trash $trashbox") == 0 or die "system 'mv' failed: $?";
+            for (@$trash) {
+                say "Delete successful. $_\t-> $trashbox";
             }
         } else {
             say "Nothing changes.";

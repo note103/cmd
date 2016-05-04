@@ -5,6 +5,7 @@ package Move {
     use File::Copy::Recursive 'rmove';
 
     my $dir  = '.';
+    my $tree = '';
     my $fmt = '';
     my $message_choice = "Put the words before & after.(or [ls/q/quit])";
     my $message_confirmation = "Move it OK? [y/N]\n";
@@ -63,6 +64,14 @@ package Move {
         else {
             print @dir;
             print @file;
+        }
+        if ($tree =~ /([^\/]+)\//) {
+            say "\t---";
+            my @tree = `tree $1`;
+            for (@tree) {
+                print "\t$_";
+            }
+            $tree = '';
         }
         print "\n";
     }
@@ -141,6 +150,7 @@ package Move {
                 my $dist = $moved[0];
 
                 say 'to:';
+                $tree = $dist;
                 say "\t$dist";
 
                 say "\n$message_confirmation";
