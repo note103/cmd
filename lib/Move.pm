@@ -190,6 +190,7 @@ package Move {
                 }
                 else {
                     say "Nothing changes.\n";
+                    $tree = '';
                 }
             }
             else {
