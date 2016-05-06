@@ -141,6 +141,7 @@ package Move {
                 say 'from:';
                 if (scalar(@target) == 0) {
                     say "Not matched: $before\n";
+                    init();
                 }
                 else {
                     for (@target) {
