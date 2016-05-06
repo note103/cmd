@@ -187,8 +187,8 @@ package Move {
                     opendir(my $iter, $dir) or die;
                     for $source (readdir $iter) {
                         next if ($source =~ /^\./);
-                        for my $target (@target) {
-                            if ($source =~ /$target/) {
+                        for (@target) {
+                            if ($source =~ /\A$_\z/) {
                                 my $rdist = $dist;
                                 if ($fmt eq 'file') {
                                     next unless (-f $source);
