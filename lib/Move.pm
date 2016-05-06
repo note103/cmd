@@ -4,10 +4,10 @@ package Move {
     use feature 'say';
     use File::Copy::Recursive 'rmove';
 
-    my $dir  = '.';
-    my $tree = '';
-    my $fmt = '';
-    my $message_choice = "Put the words before & after.(or [ls/q/quit])";
+    my $dir                  = '.';
+    my $tree                 = '';
+    my $fmt                  = '';
+    my $message_choice       = "Put the words before & after.(or [ls/q/quit])";
     my $message_confirmation = "Move it OK? [y/N]\n";
 
     sub init {
@@ -83,20 +83,37 @@ package Move {
 
         unless ($get =~ /\A(q|e|quit|exit)\z/) {
             chomp $get;
+            my $before = '';
+            my $after  = '';
+            my $source = '';
+            my @before = ();
+            my @after  = ();
+            my @source = ();
+            my @match  = ();
+            my @buffer = ();
 
-            my ($before, $after, $source);
-            my (@after, @before, @buffer, @match, @source);
+            if ($get =~ /\A"(?<before>.+)"(?<after>( +(\S+))+)/) {
+            }
+            elsif ($get =~ /\A(?<before>\S+)(?<after>( +(\S+))+)/) {
+            }
 
-            if ($get =~ /\A(\S+)(( +(\S+))+)/) {
-                $before = $1;
-                my @after  = split / /, $2;
+            if ($+{before} && $+{after}) {
+                $before = $+{before};
+                $after  = $+{after};
+                if ($after =~ /("(.+)")/) {
+                    push @after, $2;
+                    $after =~ s/$1//;
+                }
+                my @split  = split / /, $after;
+                push @after, @split;
+
                 for (@after) {
                     next if ($_ eq '');
                     push @buffer, $_;
                 }
                 if (scalar(@buffer) >= 2) {
                     unshift @buffer, $before;
-                    $after = pop @buffer;
+                    $after  = pop @buffer;
                     @before = @buffer;
                 }
                 elsif (scalar(@buffer) == 1) {
@@ -110,10 +127,10 @@ package Move {
                     for (@before) {
                         if ($source =~ /$_/) {
                             if ($fmt eq 'file') {
-                                next unless (-f $source)
+                                next unless (-f $source);
                             }
                             elsif ($fmt eq 'dir') {
-                                next unless (-d $source)
+                                next unless (-d $source);
                             }
                             push @target, $source;
                         }
@@ -124,12 +141,14 @@ package Move {
                 say 'from:';
                 if (scalar(@target) == 0) {
                     say "Not matched: $before\n";
-                } else {
+                }
+                else {
                     for (@target) {
                         next if ($_ =~ /^\./);
                         if (-d $_) {
                             say "\t$_/";
-                        } else {
+                        }
+                        else {
                             say "\t$_";
                         }
                     }
@@ -140,12 +159,12 @@ package Move {
                 for my $source (readdir $iter_dir) {
                     if ($source =~ /$after/) {
                         next unless (-d $source);
-                        push @moved, $source.'/';
+                        push @moved, $source . '/';
                     }
                 }
                 closedir $iter_dir;
                 if (scalar(@moved) == 0) {
-                    push @moved, $after.'/';
+                    push @moved, $after . '/';
                 }
                 my $dist = $moved[0];
 
@@ -182,7 +201,8 @@ package Move {
                                 }
                                 rmove($source, $rdist) or die $!;
                                 $rdist = $dist;
-                            } else {
+                            }
+                            else {
                             }
                         }
                     }

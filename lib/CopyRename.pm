@@ -7,7 +7,7 @@ package CopyRename {
 
     my $dir  = '.';
     my $tree = '';
-    my $fmt = '';
+    my $fmt  = '';
     my $message_confirmation;
     my $message_choice;
 
@@ -95,16 +95,27 @@ package CopyRename {
 
         unless ($get =~ /\A(q|e|quit|exit)\z/) {
             chomp $get;
-            my ($before, $after);
-            my @after  = ();
-            my @match  = ();
-            my @source = ();
+            my $before = '';
+            my $after  = '';
             my $source = '';
+            my @after  = ();
+            my @source = ();
+            my @match  = ();
 
-            if ($get =~ /\A(\S+)(( +(\S+))+)/) {
-                $before = $1;
-                $after  = $2;
-                @after  = split / /, $after;
+            if ($get =~ /\A"(?<before>.+)"(?<after>( +(\S+))+)/) {
+            }
+            elsif ($get =~ /\A(?<before>\S+)(?<after>( +(\S+))+)/) {
+            }
+
+            if ($+{before} && $+{after}) {
+                $before = $+{before};
+                $after  = $+{after};
+                if ($after =~ /("(.+)")/) {
+                    push @after, $2;
+                    $after =~ s/$1//;
+                }
+                my @split  = split / /, $after;
+                push @after, @split;
 
                 opendir(my $iter, $dir) or die;
                 for $source (readdir $iter) {
