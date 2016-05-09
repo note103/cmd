@@ -105,6 +105,7 @@ package Delete {
                     if ($search =~ /$target/) {
                         $search = $search.'/' if (-d $search);
                         say 'Matched: '.$search;
+                        $search =~ s/ +/\\ /;
                         push @$trash, $search;
                     }
                 }
@@ -140,8 +141,9 @@ package Delete {
         chomp(my $decision = <STDIN>);
         if ($decision =~/(y|yes)/i) {
             system("if [ ! -e $trashbox ] ; then mkdir -p $trashbox ; fi") == 0 or die "system 'mkdir' failed: $?";
-            system("mv @trash $trashbox") == 0 or die "system 'mv' failed: $?";
-            for (@$trash) {
+            for (@trash) {
+                $_ =~ s/"/\\"/g;
+                system("mv $_ $trashbox") == 0 or die "system 'mv' failed: $?";
                 say "Deleted successful. $_\t-> $trashbox";
             }
         } else {
