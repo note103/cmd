@@ -158,6 +158,7 @@ package CopyRename {
                         $tree = $_;
                         say "\t$_";
                     }
+
                     say "\n$message_confirmation";
                     my $source = '';
                     chomp(my $result = <STDIN>);
