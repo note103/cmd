@@ -137,11 +137,12 @@ package CopyRename {
                             my $new = $source;
                             $new =~ s/$before/$_/;
                             if (-e $dir . '/' . $new) {
-                                say "$new is already exist.";
-                                next;
+                                push @match, "$new is already exist.";
+                                $_ = '';
+                            } else {
+                                $new = $new . '/' if (-d $new);
+                                push @match, $new;
                             }
-                            $new = $new . '/' if (-d $new);
-                            push @match, $new;
                         }
                     }
                 }
