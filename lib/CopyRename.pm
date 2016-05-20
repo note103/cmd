@@ -114,7 +114,7 @@ package CopyRename {
                     push @after, $2;
                     $after =~ s/$1//;
                 }
-                my @split  = split / /, $after;
+                my @split = split / /, $after;
                 push @after, @split;
 
                 opendir(my $iter, $dir) or die;
@@ -131,17 +131,17 @@ package CopyRename {
                     }
                     if ($source =~ /$before/) {
                         $source = $source . '/' if (-d $source);
-                        push @source, $source;
                         for (@after) {
                             next if ($_ eq '');
                             my $new = $source;
                             $new =~ s/$before/$_/;
                             if (-e $dir . '/' . $new) {
-                                push @match, "$new is already exist.";
-                                $_ = '';
-                            } else {
+                                say "$new is already exist.";
+                            }
+                            else {
                                 $new = $new . '/' if (-d $new);
-                                push @match, $new;
+                                push @match,  $new;
+                                push @source, $source;
                             }
                         }
                     }
@@ -164,8 +164,7 @@ package CopyRename {
                     my $source = '';
                     chomp(my $result = <STDIN>);
                     if ($result =~ /\A(y|yes)\z/) {
-                        opendir(my $iter, $dir) or die;
-                        for $source (readdir $iter) {
+                        for $source (@source) {
                             next if ($source =~ /^\./);
                             if ($source =~ /$before/) {
                                 for (@after) {
@@ -195,7 +194,6 @@ package CopyRename {
                                 }
                             }
                         }
-                        closedir $iter;
                     }
                     else {
                         say "Nothing changes.\n";
