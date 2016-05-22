@@ -105,7 +105,7 @@ package Delete {
                     if ($search =~ /$target/) {
                         $search = $search.'/' if (-d $search);
                         say 'Matched: '.$search;
-                        $search =~ s/ +/\\ /;
+                        $search =~ s/ +/\\ /g;
                         push @$trash, $search;
                     }
                 }
