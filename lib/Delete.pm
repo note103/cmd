@@ -5,12 +5,12 @@ package Delete {
 
     my $dir = '.';
     my $fmt = '';
-    my $trashbox = '$HOME/tmp_trash/my_trash_box';
+    my $trashbox = '$HOME/tmp_trash';
 
     sub init {
         print "f/d/a/q?\n>> ";
         chomp(my $init = <STDIN>);
-        
+
         $fmt = '';
         if ($init eq 'f') {
             $fmt = 'file'
@@ -144,7 +144,7 @@ package Delete {
             for (@trash) {
                 $_ =~ s/"/\\"/g;
                 system("mv $_ $trashbox") == 0 or die "system 'mv' failed: $?";
-                say "Deleted successful. $_\t-> $trashbox";
+                say "Deleted successful. $_\t->\t$trashbox";
             }
         } else {
             say "Nothing changes.";

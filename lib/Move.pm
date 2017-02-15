@@ -58,12 +58,9 @@ package Move {
         if ($fmt eq 'dir') {
             print @dir;
         }
-        elsif ($fmt eq 'file') {
-            print @file;
-        }
         else {
-            print @dir;
             print @file;
+            print @dir;
         }
         if ($tree =~ /([^\/]+)\//) {
             say "\t---";

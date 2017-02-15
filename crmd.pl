@@ -2,7 +2,8 @@
 use strict;
 use warnings;
 use feature 'say';
-use lib 'lib';
+use lib '/path/to/crmd/lib';
+
 use CopyRename;
 use Delete;
 use Move;

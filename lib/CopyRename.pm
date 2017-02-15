@@ -76,7 +76,7 @@ package CopyRename {
             print @dir;
             print @file;
         }
-        if ($tree =~ /\A([^\/]+)\/([^\/]+)/) {
+        if ($tree =~ /([^\/]+)\/([^\/]+)$/) {
             say "\t---";
             my @tree = `tree $1`;
             for (@tree) {
@@ -197,6 +197,7 @@ package CopyRename {
                     }
                     else {
                         say "Nothing changes.\n";
+                        $tree = '';
                     }
                 }
                 else {
