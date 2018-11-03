@@ -11,8 +11,11 @@ package Move {
     my $message_confirmation = "Move it OK? [y/N]\n";
 
     sub init {
+        $dir                  = '.';
+        $tree                 = '';
+        $fmt                  = '';
 
-        print "f/d/a/q?\n>> ";
+        print "f/d/q?\n>> ";
         chomp(my $init = <STDIN>);
 
         if ($init eq 'f') {
@@ -21,11 +24,7 @@ package Move {
         elsif ($init eq 'd') {
             $fmt = 'dir';
         }
-        elsif ($init eq 'a') {
-            $fmt = 'all';
-        }
         elsif ($init eq 'q') {
-            say "Exit.";
             exit;
         }
         else {
@@ -82,6 +81,8 @@ package Move {
             chomp $get;
             my $before = '';
             my $after  = '';
+            my $dist  = '';
+            my $rdist  = '';
             my $source = '';
             my @before = ();
             my @after  = ();
@@ -164,7 +165,7 @@ package Move {
                 if (scalar(@moved) == 0) {
                     push @moved, $after . '/';
                 }
-                my $dist = $moved[0];
+                $dist = $moved[0];
 
                 say 'to:';
                 $tree = $dist;
@@ -186,7 +187,7 @@ package Move {
                         next if ($source =~ /^\./);
                         for (@target) {
                             if ($source =~ /\A$_\z/) {
-                                my $rdist = $dist;
+                                $rdist = $dist;
                                 if ($fmt eq 'file') {
                                     next unless (-f $source);
                                 }
@@ -200,25 +201,24 @@ package Move {
                                 rmove($source, $rdist) or die $!;
                                 $rdist = $dist;
                             }
-                            else {
-                            }
                         }
                     }
                     closedir $iter;
                 }
                 else {
                     say "Nothing changes.\n";
-                    $tree = '';
+                    init();
                 }
             }
             else {
                 say "Incorrect command.";
+                init();
             }
             current_dir($fmt);
-            init();
+            exit;
         }
         else {
-            say "Exit.";
+            exit;
         }
     }
 }

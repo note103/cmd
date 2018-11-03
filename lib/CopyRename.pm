@@ -35,7 +35,6 @@ package CopyRename {
             $fmt = 'all';
         }
         elsif ($init eq 'q') {
-            say "Exit.";
             exit;
         }
         else {
@@ -202,16 +201,17 @@ package CopyRename {
                 }
                 else {
                     say "Not matched: $before\n";
+                    exit;
                 }
             }
             else {
                 say "Incorrect command.";
+                exit;
             }
             result($fmt);
-            init($command);
+            exit;
         }
         else {
-            say "Exit.";
         }
     }
 }

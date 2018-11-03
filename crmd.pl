@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use feature 'say';
-use lib '/path/to/crmd/lib';
+use lib 'lib';
 
 use CopyRename;
 use Delete;

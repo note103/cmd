@@ -22,13 +22,11 @@ package Delete {
             $fmt = 'all'
         }
         elsif ($init eq 'q') {
-            say "Exit.";
             exit;
         }
         else {
             init();
         }
-
         result($fmt);
         main($fmt);
     }
@@ -71,7 +69,6 @@ package Delete {
         chomp(my $get = <STDIN>);
 
         if ($get =~ /\A(q|quit)\z/) {
-            say "Exit.";
             exit;
         }
         elsif ($get =~ /\A\z/) {
@@ -82,34 +79,10 @@ package Delete {
             main($fmt);
         }
         else {
-            my ($first, $other);
-            my @other = '';
-            if ($get =~ /\A(\S+)(( (\S+))+)/) {
-                $first = $1;
-                $other = $2;
-                @other = split / /, $other;
-            }
-            elsif ($get =~ /\A(\S+)(\s*)\z/) {
-                $first = $1;
-            } else {
-                die "Can't open target:$!";
-            }
-            unshift @other, $first;
+            my $query = $1 if ($get =~ /\A(\S+)/) or die "Can't open target:$!";
+            my $search;
 
-            my $search = '';
             opendir (my $iter, $dir) or die;
-            my $f = sub {
-                $search = shift;
-                for my $target (@other) {
-                    next if ($target eq '');
-                    if ($search =~ /$target/) {
-                        $search = $search.'/' if (-d $search);
-                        say 'Matched: '.$search;
-                        $search =~ s/ +/\\ /g;
-                        push @$trash, $search;
-                    }
-                }
-            };
             for $search (readdir $iter) {
                 next if ($search =~ /^\./);
                 if ($fmt eq 'file') {
@@ -118,7 +91,11 @@ package Delete {
                 elsif ($fmt eq 'dir') {
                     next unless (-d $dir.'/'.$search);
                 }
-                $f->($search);
+                if ($search =~ /$query/) {
+                    $search = $search.'/' if (-d $search);
+                    say 'Matched: '.$search;
+                    push @$trash, $search;
+                }
             }
             closedir $iter;
 
@@ -126,7 +103,7 @@ package Delete {
                 say "Not matched: $get\n";
                 init();
             } else {
-                del($trash, $fmt);
+                del($trash);
             }
         }
     }
@@ -137,20 +114,19 @@ package Delete {
 
         say '';
         print "Delete it OK? [y/N]\n";
-
         chomp(my $decision = <STDIN>);
+
         if ($decision =~/(y|yes)/i) {
             system("if [ ! -e $trashbox ] ; then mkdir -p $trashbox ; fi") == 0 or die "system 'mkdir' failed: $?";
             for (@trash) {
                 $_ =~ s/"/\\"/g;
-                system("mv $_ $trashbox") == 0 or die "system 'mv' failed: $?";
+                `mv "$_" $trashbox`;
+                # system("mv $_ $trashbox") == 0 or die "system 'mv' failed: $?";
                 say "Deleted successful. $_\t->\t$trashbox";
             }
         } else {
             say "Nothing changes.";
         }
-        say '';
-        init();
     }
 }
 
