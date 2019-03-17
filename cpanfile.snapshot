@@ -1,0 +1,12 @@
+# carton snapshot format: version 1.0
+DISTRIBUTIONS
+  File-Copy-Recursive-0.44
+    pathname: D/DM/DMUEY/File-Copy-Recursive-0.44.tar.gz
+    provides:
+      File::Copy::Recursive 0.44
+    requirements:
+      Cwd 0
+      ExtUtils::MakeMaker 0
+      File::Copy 0
+      File::Glob 0
+      File::Spec 0
