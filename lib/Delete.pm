@@ -5,7 +5,8 @@ package Delete {
 
     my $dir = '.';
     my $fmt = '';
-    my $trashbox = '$HOME/tmp_trash';
+    my $home = qx(echo \$HOME | tr -d "\n");
+    my $trashbox = "$home/tmp_trash";
 
     sub init {
         print "f/d/a/q?\n>> ";
