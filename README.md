@@ -5,18 +5,16 @@ crmd - File/Directory Handler about Copy, Rename, Move, Delete.
 # SYNOPSIS
 
     # rcopy
-    $ perl crmd.pl c
+    $ perl copy-rename.pl rcopy
 
     # rname
-    $ perl crmd.pl r
+    $ perl copy-rename.pl rname
 
     # rmove
-    $ perl crmd.pl m
+    $ perl move.pl
 
     # delete
-    $ perl crmd.pl d
-
-See also: <http://note103.hateblo.jp/entry/2016/05/04/185752>
+    $ perl delete.pl
 
 # LICENSE
 

@@ -4,14 +4,12 @@ use feature 'say';
 use File::Copy 'copy';
 use File::Copy::Recursive qw/fmove rmove rcopy/;
 
-my $dir  = '.';
-my $tree = '';
-my $fmt  = '';
-my $command = $ARGV[0];
+my $arg = $ARGV[0];
 
 print "f/d/a/q?\n>> ";
 chomp(my $init = <STDIN>);
 
+my $fmt  = '';
 if ($init eq 'f') {
     $fmt = 'file';
 }
@@ -25,8 +23,11 @@ else {
     exit;
 }
 
+my $dir  = '.';
+my $tree = '';
+
 result($fmt);
-main($command);
+main($arg);
 
 sub result {
     my $fmt = shift;
@@ -34,7 +35,7 @@ sub result {
     my (@file, @dir) = ();
     my $last_dir = '';
 
-    opendir(my $iter, $dir) or die;
+    opendir(my $iter, $dir) or die $!;
     for (readdir $iter) {
         next if ($_ =~ /\A\./);
         if (-f $dir . '/' . $_) {
@@ -58,6 +59,7 @@ sub result {
         print @dir;
         print @file;
     }
+
     if ($tree =~ /([^\/]+)\/([^\/]+)$/) {
         say "\t---";
         my @tree = `tree $1`;
@@ -66,16 +68,17 @@ sub result {
         }
         $tree = '';
     }
-    print "\n";
+
+    say '';
 }
 
 sub main {
-    my $command = shift;
+    my $arg = shift;
 
     say "Put the words before & after.(or [ls/q/quit])";
     chomp(my $get = <STDIN>);
 
-    unless ($get =~ /\A(q|e|quit|exit)\z/) {
+    unless ($get =~ /\A(q|quit)\z/) {
         chomp $get;
         my $before = '';
         my $after  = '';
@@ -142,17 +145,16 @@ sub main {
                     say "\t$_";
                 }
 
-                my $message_confirmation;
-                if ($command eq 'rcopy') {
-                    $message_confirmation = "Copy it OK? [y/N]\n";
-                }
-                elsif ($command eq 'rname') {
-                    $message_confirmation = "Move it OK? [y/N]\n";
-                }
+                my $command;
+                $command = 'Copy' if ($arg eq 'rcopy');
+                $command = 'Move' if ($arg eq 'rname');
+                my $message_confirmation = "$command it OK? [y/N]\n";
 
                 say "\n$message_confirmation";
+
                 my $source = '';
                 chomp(my $result = <STDIN>);
+
                 if ($result =~ /\A(y|yes)\z/) {
                     for $source (@source) {
                         next if ($source =~ /^\./);
@@ -163,10 +165,10 @@ sub main {
                                 $new =~ s/$before/$_/;
                                 if ($fmt eq 'file') {
                                     next unless (-f $source);
-                                    if ($command eq 'rcopy') {
+                                    if ($arg eq 'rcopy') {
                                         copy($source, $new) or die $!;
                                     }
-                                    elsif ($command eq 'rname') {
+                                    elsif ($arg eq 'rname') {
                                         fmove($source, $new) or die $!;
                                     }
                                 }
@@ -174,10 +176,10 @@ sub main {
                                     if ($fmt eq 'dir') {
                                         next unless (-d $source);
                                     }
-                                    if ($command eq 'rcopy') {
+                                    if ($arg eq 'rcopy') {
                                         rcopy($source, $new) or die $!;
                                     }
-                                    elsif ($command eq 'rname') {
+                                    elsif ($arg eq 'rname') {
                                         rmove($source, $new) or die $!;
                                     }
                                 }
@@ -201,7 +203,5 @@ sub main {
         }
         result($fmt);
         exit;
-    }
-    else {
     }
 }
