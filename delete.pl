@@ -3,14 +3,13 @@ use warnings;
 use feature 'say';
 
 my $dir = '.';
-my $fmt = '';
 my $home = qx(echo \$HOME | tr -d "\n");
 my $trashbox = "$home/tmp_trash";
 
 print "f/d/a/q?\n>> ";
 chomp(my $init = <STDIN>);
 
-$fmt = '';
+my $fmt = '';
 if ($init eq 'f') {
     $fmt = 'file'
 }
@@ -23,6 +22,7 @@ elsif ($init eq 'a') {
 else {
     exit;
 }
+
 result($fmt);
 main($fmt);
 
