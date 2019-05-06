@@ -114,6 +114,7 @@ sub main {
                 elsif ($fmt eq 'all') {
                     next unless (-e $dir . '/' . $source);
                 }
+
                 if ($source =~ /$before/) {
                     $source = $source . '/' if (-d $source);
                     for (@after) {
