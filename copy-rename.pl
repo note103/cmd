@@ -75,7 +75,7 @@ sub result {
 sub main {
     my $arg = shift;
 
-    say "Put the words before & after.(or [ls/q/quit])";
+    say "Put the words before & after.";
     chomp(my $get = <STDIN>);
 
     unless ($get =~ /\A(q|quit)\z/) {
