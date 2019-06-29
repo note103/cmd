@@ -6,7 +6,7 @@ use File::Copy::Recursive qw/fmove rmove rcopy/;
 
 my $arg = $ARGV[0];
 
-print "f/d/a/q?\n>> ";
+print "f/d/a/q?\n> ";
 chomp(my $init = <STDIN>);
 
 my $fmt  = '';
@@ -75,7 +75,7 @@ sub result {
 sub main {
     my $arg = shift;
 
-    say "Put the words before & after.";
+    print "Put the words before & after\n> ";
     chomp(my $get = <STDIN>);
 
     unless ($get =~ /\A(q|quit)\z/) {
@@ -148,10 +148,10 @@ sub main {
 
                 my $command;
                 $command = 'Copy' if ($arg eq 'rcopy');
-                $command = 'Move' if ($arg eq 'rname');
-                my $message_confirmation = "$command it OK? [y/N]\n";
+                $command = 'Change' if ($arg eq 'rname');
+                my $message_confirmation = "$command OK? [y/N]\n> ";
 
-                say "\n$message_confirmation";
+                print "\n$message_confirmation";
 
                 my $source = '';
                 chomp(my $result = <STDIN>);
